@@ -129,7 +129,6 @@ const App = () => {
   const [selectedCategory, setSelectedCategory] = useState('');
   const [selectedProductForPurchase, setSelectedProductForPurchase] = useState(null);
   const [db, setDb] = useState(null);
-  const [auth, setAuth] = useState(null);
   const [storage, setStorage] = useState(null);
   const [userId, setUserId] = useState(null);
   const [uploadMessage, setUploadMessage] = useState('');
@@ -219,7 +218,6 @@ const App = () => {
     const authInstance = getAuth(app);
     const storageInstance = getStorage(app);
     setDb(firestore);
-    setAuth(authInstance);
     setStorage(storageInstance);
 
     const unsubscribe = onAuthStateChanged(authInstance, (user) => {
