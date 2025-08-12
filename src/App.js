@@ -4,19 +4,17 @@ import { getAuth, signInAnonymously, onAuthStateChanged } from 'firebase/auth';
 import { getFirestore, doc, collection, addDoc, onSnapshot, serverTimestamp, query, deleteDoc } from 'firebase/firestore';
 import { getStorage, ref, uploadString, getDownloadURL } from 'firebase/storage';
 
-// --- Firebase Configuration ---
-const firebaseConfig = (typeof process !== 'undefined' && process.env.REACT_APP_FIREBASE_API_KEY)
-  ? {
-      apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
-      authDomain: process.env.REACT_APP_FIREBASE_AUTH_DOMAIN,
-      projectId: process.env.REACT_APP_FIREBASE_PROJECT_ID,
-      storageBucket: process.env.REACT_APP_FIREBASE_STORAGE_BUCKET,
-      messagingSenderId: process.env.REACT_APP_FIREBASE_MESSAGING_SENDER_ID,
-      appId: process.env.REACT_APP_FIREBASE_APP_ID
-    }
-  : (typeof __firebase_config !== 'undefined'
-      ? JSON.parse(__firebase_config)
-      : {});
+// --- Firebase Configuration for Netlify ---
+// This configuration exclusively uses the environment variables set in the Netlify UI.
+const firebaseConfig = {
+  apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
+  authDomain: process.env.REACT_APP_FIREBASE_AUTH_DOMAIN,
+  projectId: process.env.REACT_APP_FIREBASE_PROJECT_ID,
+  storageBucket: process.env.REACT_APP_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: process.env.REACT_APP_FIREBASE_MESSAGING_SENDER_ID,
+  appId: process.env.REACT_APP_FIREBASE_APP_ID
+};
+
 
 // --- Helper Functions & Static Components ---
 
@@ -213,6 +211,7 @@ const App = () => {
   useEffect(() => {
     if (!firebaseConfig.apiKey) {
       console.error("Firebase config is missing. Add environment variables to your hosting provider.");
+      setIsFirebaseReady(true); // Mark as ready to prevent infinite loading screen on error
       return;
     }
     const app = initializeApp(firebaseConfig);
@@ -772,4 +771,4 @@ const App = () => {
   );
 };
 
-export default App;
+export default App
